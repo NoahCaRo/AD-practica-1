@@ -23,7 +23,7 @@ public class ConexionMysql {
 		}
 	}
 	
-	public Connection getConnectionMysql() {
+	public Connection getConexion() {
 		return conexionMySQL;
 	}
 	
