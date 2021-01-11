@@ -11,9 +11,9 @@ public class ProductosDto implements Serializable {
 	private int idProducto;
 	private String descripcion;
 	private int stockAnual;
-	private int pvp;
+	private double pvp;
 
-	public ProductosDto(int id, String desc, int stock, int pvp) {
+	public ProductosDto(int id, String desc, int stock, double pvp) {
 		idProducto = id;
 		descripcion = desc;
 		stockAnual = stock;
@@ -39,7 +39,7 @@ public class ProductosDto implements Serializable {
 		return stockAnual;
 	}
 
-	public int getPvp() {
+	public double getPvp() {
 		return pvp;
 	}
 
@@ -55,7 +55,7 @@ public class ProductosDto implements Serializable {
 		this.stockAnual = stockAnual;
 	}
 
-	public void setPvp(int pvp) {
+	public void setPvp(double pvp) {
 		this.pvp = pvp;
 	}
 

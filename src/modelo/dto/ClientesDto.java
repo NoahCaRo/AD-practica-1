@@ -1,7 +1,6 @@
 package modelo.dto;
 
 import java.io.Serializable;
-import java.util.Dictionary;
 
 /* idCliente int not null PRIMARY key,
     nombre varchar(50) not null,

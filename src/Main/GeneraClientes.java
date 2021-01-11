@@ -7,20 +7,19 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Scanner;
 
-import modelo.dto.ProductosDto;
+import modelo.dto.ClientesDto;
 
-public class GeneraProductos {
+public class GeneraClientes {
 	static Scanner scanner = new Scanner(System.in);
-	static ArrayList<ProductosDto> productos = new ArrayList<ProductosDto>();
+	static ArrayList<ClientesDto> clientes = new ArrayList<ClientesDto>();
 
-//genera productos leyendo de teclado y crea un archivo binario 
 	public static void main(String[] args) {
-		String nombreFichero = "PRODUCTOS" + dimeFechaActualConFormato() + "_" + dimeContadorDiario() + ".dat";
+		String nombreFichero = "CLIENTES" + dimeFechaActualConFormato() + "_" + dimeContadorDiario() + ".bin";
 		boolean salir = false;
 		do {
 			menuPrincipal();
@@ -55,7 +54,6 @@ public class GeneraProductos {
 		System.out.println("HASTA LUEGO");
 	}
 
-	// muestra por teclado el menu (crear producto, salir)
 	private static void menuPrincipal() {
 		System.out.println("Selecciona una opcion : ");
 		System.out.println("1.- Crear un producto");
@@ -89,71 +87,103 @@ public class GeneraProductos {
 	}
 
 	private static void introduceDatosDelProducto() {
-		productos.add(new ProductosDto(0, introduceDescripcionDelProducto(), introduceStockDelProducto(),
-				introducePVPDelProducto()));
-	}
+		clientes.add(new ClientesDto(0, introduceNombreDelCliente(), introduceDireccionDelCliente(),
+				introducePoblacionDelCliente(), introduceTelefonoDelCliente(), introduceNIFDelCliente()));
+	}/*
+		 * private int idCliente; private String nombre; private String direccion;
+		 * private String poblacion; private String telefono; private String nif;
+		 */
 
-	private static void enunciadoDescripcion() {
-		System.out.println("Inserte la DESCRIPCION del producto");
+	private static void enunciadoNombreCliente() {
+		System.out.println("Inserte el NOMBRE del cliente");
 		System.out.println("--------------------------------------");
 	}
 
-	private static String introduceDescripcionDelProducto() {
-		String descripcion;
+	private static String introduceNombreDelCliente() {
+		String nombre;
 		do {
-			enunciadoDescripcion();
-			descripcion = scanner.nextLine();
-			if (descripcion.trim().equals("")) {
-				System.out.println("Inserccion no valida");
-			} else {
-				return descripcion;
-			}
+			enunciadoNombreCliente();
+			nombre = escribirYComprobarString();
 
-		} while (descripcion.trim().equals(""));
+		} while (nombre.trim().equals(""));
 
-		return descripcion;
+		return nombre;
 	}
 
-	private static void enunciadoStock() {
-		System.out.println("Inserte la STOCK del producto");
+	private static void enunciadoDireccionCliente() {
+		System.out.println("Inserte la DIRECCION del cliente");
 		System.out.println("--------------------------------------");
 	}
 
-	private static int introduceStockDelProducto() {
+	private static String introduceDireccionDelCliente() {
+		String direccion;
+		do {
+			enunciadoDireccionCliente();
+			direccion = escribirYComprobarString();
+
+		} while (direccion.trim().equals(""));
+
+		return direccion;
+	}
+
+	private static void enunciadoPoblacionCliente() {
+		System.out.println("Inserte la POBLACION del cliente");
+		System.out.println("--------------------------------------");
+	}
+
+	private static String introducePoblacionDelCliente() {
+		String poblacion;
+		do {
+			enunciadoPoblacionCliente();
+			poblacion = escribirYComprobarString();
+
+		} while (poblacion.trim().equals(""));
+
+		return poblacion;
+	}
+
+	private static void enunciadoTelefonoCliente() {
+		System.out.println("Inserte el TELEFONO del cliente");
+		System.out.println("--------------------------------------");
+	}
+
+	private static String introduceTelefonoDelCliente() {
 		int opcion = 0;
-		boolean opcionInsertadaCorrecta = false;
 		do {
-			enunciadoStock();
+			enunciadoTelefonoCliente();
 			try {
 				opcion = Integer.parseInt(inserccionDatoStringAuxiliar());
-				return opcion;
+				return opcion + "";
 			} catch (Exception e) {
 				mensajeDeError();
 			}
-		} while (!opcionInsertadaCorrecta);
-		return opcion;
 
+		} while (true);
 	}
 
-	private static void enunciadoPVP() {
-		System.out.println("Inserte la PVP del producto");
+	private static void enunciadoNIFCliente() {
+		System.out.println("Inserte el NIF del cliente");
 		System.out.println("--------------------------------------");
 	}
 
-	private static double introducePVPDelProducto() {
-		boolean opcionInsertadaCorrecta = false;
-		double opcion = 0;
+	private static String introduceNIFDelCliente() {
+		String nif;
 		do {
-			enunciadoPVP();
-			try {
-				opcion = Double.parseDouble(inserccionDatoStringAuxiliar());
-				opcionInsertadaCorrecta = true;
-				return opcion;
-			} catch (Exception e) {
-				mensajeDeError();
-			}
-		} while (!opcionInsertadaCorrecta);
-		return opcion;
+			enunciadoNIFCliente();
+			nif = escribirYComprobarString();
+
+		} while (nif.trim().equals(""));
+
+		return nif;
+	}
+
+	private static String escribirYComprobarString() {
+		String aux = "";
+		aux = scanner.nextLine();
+		if (aux.trim().equals("")) {
+			mensajeDeError();
+		}
+		return aux;
 	}
 
 	private static void mensajeDeError() {
@@ -169,7 +199,6 @@ public class GeneraProductos {
 		return opcionRecogida;
 	}
 
-
 	private static void introduceDatosEnElArchivoBinario(String nombreFichero) {// como nuestro fichero siempre sera el
 																				// primer
 
@@ -177,10 +206,12 @@ public class GeneraProductos {
 		try {
 			FileOutputStream fileout = new FileOutputStream(nombreFichero);
 			ObjectOutputStream dataOS = new ObjectOutputStream(fileout);
-			for (int i = 0; i < productos.size(); i++) { // recorro los arrays
-				ProductosDto p = new ProductosDto(productos.get(i).getIdProducto(), productos.get(i).getDescripcion(),
-						productos.get(i).getStockAnual(), productos.get(i).getPvp());
-				dataOS.writeObject(p);
+			for (int i = 0; i < clientes.size(); i++) { // recorro los arrays
+				ClientesDto c = new ClientesDto(clientes.get(i).getIdCliente(), clientes.get(i).getNombre(),
+						clientes.get(i).getDireccion(), clientes.get(i).getPoblacion(), clientes.get(i).getTelefono(),
+						clientes.get(i).getNif());
+				
+				dataOS.writeObject(c);
 			}
 			dataOS.close(); // cerrar stream de salida
 		} catch (FileNotFoundException e) {
@@ -193,7 +224,8 @@ public class GeneraProductos {
 
 	}
 
-	private static String dimeFechaActualConFormato() {//pedimos al sistema la fecha con el formato dd/mm/aaaa y lo modificamos al formato ddmmaa requerido
+	private static String dimeFechaActualConFormato() {// pedimos al sistema la fecha con el formato dd/mm/aaaa y lo
+														// modificamos al formato ddmmaa requerido
 		Date date = Calendar.getInstance().getTime();
 		DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		String today = formatter.format(date);
@@ -226,15 +258,14 @@ public class GeneraProductos {
 
 		String[] listadoTXT = carpeta.list(); // hacemos un "dir" dentro de la carpeta para que nos muestren los
 
-
 		do {
 			try {
-				while(i < listadoTXT.length) {// buscamos dentro del array un archivo
-					String fechaArchivoString = listadoTXT[i].substring(9, 15);
+				while (i < listadoTXT.length) {// buscamos dentro del array un archivo
+					String fechaArchivoString = listadoTXT[i].substring(8, 14);
 					if (fechaActual.equals(fechaArchivoString)) {
-						int aux = Integer.parseInt(listadoTXT[i].substring(16, 18));
-						if(v<aux) {
-							v =aux;
+						int aux = Integer.parseInt(listadoTXT[i].substring(15, 17));
+						if (v < aux) {
+							v = aux;
 						}
 					}
 					i++;
