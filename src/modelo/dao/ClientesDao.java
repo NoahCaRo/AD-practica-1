@@ -74,6 +74,19 @@ public class ClientesDao {
 		}
 		return 1; // no esta en ninguna de las dos tablas
 	}
+	public int buscarClientePorID(int id) {
+		String sql = "SELECT * FROM clientes WHERE idCliente = " + id + "";
+		if (buscarClientesPorNIFEnMySQL(sql) && buscarClientesPorNIFEnSQLite(sql)) {
+			return 0;// esta en las dos tablas
+		}
+		if (!buscarClientesPorNIFEnMySQL(sql) && buscarClientesPorNIFEnSQLite(sql)) {
+			return 2;// esta en mysql
+		}
+		if (buscarClientesPorNIFEnMySQL(sql) && !buscarClientesPorNIFEnSQLite(sql)) {
+			return 3;// esta en sqlite
+		}
+		return 1; // no esta en ninguna de las dos tablas
+	}
 
 	public boolean buscarClientesPorNIFEnMySQL(String sql) {
 		ConexionMysql miConexion = new ConexionMysql();
@@ -184,5 +197,27 @@ public class ClientesDao {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+	}
+	
+	
+	public int idMaximo() {
+		int idMaximo = 1;
+		ConexionMysql con = new ConexionMysql();
+
+		try {
+			PreparedStatement consulta = con.getConexion().prepareStatement("SELECT MAX(idCliente) FROM clientes ");
+			ResultSet registro = consulta.executeQuery();
+			while (registro.next()) {
+				idMaximo = registro.getInt("idProducto");
+			}
+			registro.close();
+			con.desconectar();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error, no se conecto");
+			System.out.println(e);
+		}
+		return idMaximo;
+		
+		
 	}
 }

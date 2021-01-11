@@ -1,11 +1,15 @@
 package modelo.dto;
+
+import java.io.Serializable;
+import java.util.Dictionary;
+
 /* idCliente int not null PRIMARY key,
     nombre varchar(50) not null,
     direccion varchar(50) not null, 
     poblacion varchar(50) not null,
     telefono varchar(20) not null,
     nif varchar(10) not null UNIQUE*/
-public class ClientesDto {
+public class ClientesDto implements Serializable{
 	private int idCliente;
 	private String nombre;
 	private String direccion;
@@ -13,7 +17,22 @@ public class ClientesDto {
 	private String telefono;
 	private String nif;
 	
-	
+	public ClientesDto(int id, String n, String d, String p, String t, String nif) {
+		idCliente = id;
+		nombre = n;
+		direccion = d;
+		poblacion = p;
+		telefono = t;
+		this.nif = nif;
+	}
+	public ClientesDto() {
+		idCliente = 0;
+		nombre = "";
+		direccion = "";
+		poblacion = "";
+		telefono = "";
+		nif = "";
+	}
 	public int getIdCliente() {
 		return idCliente;
 	}

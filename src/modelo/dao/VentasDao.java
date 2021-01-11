@@ -143,5 +143,24 @@ public class VentasDao {
 		} else
 			return null;
 	}
+	public int idMaximo() {
+		int idMaximo = 1;
+		ConexionMysql con = new ConexionMysql();
 
+		try {
+			PreparedStatement consulta = con.getConexion().prepareStatement("SELECT MAX(idVenta) FROM Ventas ");
+			ResultSet registro = consulta.executeQuery();
+			while (registro.next()) {
+				idMaximo = registro.getInt("idProducto");
+			}
+			registro.close();
+			con.desconectar();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Error, no se conecto");
+			System.out.println(e);
+		}
+		return idMaximo;
+		
+		
+	}
 }

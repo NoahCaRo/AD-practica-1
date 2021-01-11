@@ -1,4 +1,7 @@
 package modelo.dto;
+
+import java.io.Serializable;
+
 /*idVenta int not null primary key,
     fechaVenta date not null,
     idCliente int,
@@ -6,7 +9,7 @@ package modelo.dto;
     cantidad int,
     FOREIGN KEY (idCliente) REFERENCES clientes(idCliente),
     FOREIGN KEY (idProducto) REFERENCES productos(idProducto)*/
-public class VentasDto {
+public class VentasDto implements Serializable{
 
 	private int idVenta;
 	private String fechaVenta;
@@ -14,7 +17,20 @@ public class VentasDto {
 	private int idProducto;
 	private int cantidad;
 	
-	
+	public VentasDto(int idV, String fecha, int idC, int idP, int c) {
+		idVenta = idV;
+		fechaVenta = fecha;
+		idCliente = idC;
+		idProducto = idP;
+		cantidad = c;
+	}
+	public VentasDto() {
+		idVenta = 0;
+		fechaVenta = "";
+		idCliente = 0;
+		idProducto = 0;
+		cantidad = 0;
+	}
 	public int getIdVenta() {
 		return idVenta;
 	}
